@@ -1,0 +1,56 @@
+# Check https://circleci.com/docs/2.0/language-elixir/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: elixir:1.6.6-alpine
+        name: app
+
+    steps:
+      - run: apk add --update -qq ca-certificates git
+      - checkout
+      - run: git clean -dfx
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+
+      - restore_cache:
+          keys:
+            - v1-mix-cache-{{ checksum "mix.lock" }}
+            - v1-mix-cache-{{ .Branch }}
+            - v1-mix-cache
+
+      - restore_cache:
+          keys:
+            - v1-build-cache-{{ .Branch }}
+            - v1-build-cache
+
+      - run: mix do deps.get, compile
+
+      - save_cache:
+          key: v1-mix-cache-{{ checksum "mix.lock" }}
+          paths: "deps"
+      - save_cache:
+          key: v1-mix-cache-{{ .Branch }}
+          paths: "deps"
+      - save_cache:
+          key: v1-mix-cache
+          paths: "deps"
+      - save_cache:
+          key: v1-mix-cache-{{ checksum "mix.lock" }}
+          paths: "_build"
+      - save_cache:
+          key: v1-build-cache-{{ .Branch }}
+          paths: "_build"
+      - save_cache:
+          key: v1-build-cache
+          paths: "_build"
+
+      - run: mix credo --strict
+      - run: MIX_ENV=test mix coveralls.circle
+      - run: mkdir -p junit/mix/
+      - run: mv ./_build/test/lib/plug_health_check/plug_health_check-test-junit-report.xml junit/mix
+
+      - store_test_results:
+          path: junit/
+      - store_artifacts:
+          path: junit/
