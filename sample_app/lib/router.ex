@@ -1,7 +1,7 @@
 defmodule SampleApp.Router do
   use Plug.Router
 
-  plug(PlugHealthCheck, supervisor: SampleApp.Supervisor)
+  plug(PlugHealthCheck)
   plug(:match)
   plug(:dispatch)
 

@@ -12,25 +12,11 @@ defmodule PlugHealthCheck do
 
   def call(conn, opts) do
     if conn.request_path == opts[:path] do
-      if do_check(opts[:supervisor]) do
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(200, "OK")
-      else
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(503, "UNHEALTHY")
-      end
+      conn
+      |> put_resp_content_type("text/plain")
+      |> send_resp(200, "OK")
     else
       conn
     end
-  end
-
-  defp do_check(nil), do: true
-
-  defp do_check(supervisor) do
-    %{active: active, specs: specs} = Supervisor.count_children(supervisor)
-
-    active == specs
   end
 end
