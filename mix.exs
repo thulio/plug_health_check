@@ -1,4 +1,4 @@
-defmodule PlugHealthcheck.MixProject do
+defmodule PlugHealthCheck.MixProject do
   use Mix.Project
 
   def project do
