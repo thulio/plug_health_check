@@ -15,7 +15,7 @@ defmodule PlugHealthCheck.MixProject do
   def application do
     [
       applications: [:plug],
-      extra_applications: [:logger]
+      extra_applications: [:logger, :inets, :ssl]
     ]
   end
 

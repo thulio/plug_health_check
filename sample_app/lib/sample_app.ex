@@ -4,7 +4,8 @@ defmodule SampleApp do
 
   def start(_type, _args) do
     children = [
-      {Plug.Adapters.Cowboy2, scheme: :http, plug: SampleApp.Router, options: [port: 8080]}
+      {Plug.Adapters.Cowboy2, scheme: :http, plug: SampleApp.Router, options: [port: 8080]},
+      {SampleApp.Repo, []}
     ]
 
     Logger.info("Started SampleApp application")

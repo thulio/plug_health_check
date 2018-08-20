@@ -21,6 +21,8 @@ defmodule SampleApp.MixProject do
   defp deps do
     [
       {:cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"},
+      {:ecto, "~> 2.1"},
       {:plug_health_check, path: "../"}
     ]
   end

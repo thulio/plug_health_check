@@ -1,7 +1,7 @@
 defmodule SampleApp.Router do
   use Plug.Router
 
-  plug(PlugHealthCheck)
+  plug(PlugHealthCheck, plugins: [SampleApp.EctoChecker, SampleApp.HTTPChecker])
   plug(:match)
   plug(:dispatch)
 

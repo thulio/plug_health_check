@@ -28,3 +28,12 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+config :sample_app, ecto_repos: [SampleApp.Repo]
+
+config :sample_app, SampleApp.Repo,
+  database: "ecto_simple",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  pool_size: 1,
+  port: "5432"
